@@ -1,35 +1,44 @@
-dnl  Copyright © 2003 Keith Packard, Noah Levitt
-dnl 
-dnl  Permission to use, copy, modify, distribute, and sell this software and its
-dnl  documentation for any purpose is hereby granted without fee, provided that
-dnl  the above copyright notice appear in all copies and that both that
-dnl  copyright notice and this permission notice appear in supporting
-dnl  documentation, and that the name of Keith Packard not be used in
-dnl  advertising or publicity pertaining to distribution of the software without
-dnl  specific, written prior permission.  Keith Packard makes no
-dnl  representations about the suitability of this software for any purpose.  It
-dnl  is provided "as is" without express or implied warranty.
-dnl 
-dnl  KEITH PACKARD DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
-dnl  INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
-dnl  EVENT SHALL KEITH PACKARD BE LIABLE FOR ANY SPECIAL, INDIRECT OR
-dnl  CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
-dnl  DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-dnl  TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-dnl  PERFORMANCE OF THIS SOFTWARE.
-dnl
-dnl Process this file with autoconf to create configure.
+#  Copyright © 2003 Keith Packard, Noah Levitt
+#
+#  Permission to use, copy, modify, distribute, and sell this software and its
+#  documentation for any purpose is hereby granted without fee, provided that
+#  the above copyright notice appear in all copies and that both that
+#  copyright notice and this permission notice appear in supporting
+#  documentation, and that the name of Keith Packard not be used in
+#  advertising or publicity pertaining to distribution of the software without
+#  specific, written prior permission.  Keith Packard makes no
+#  representations about the suitability of this software for any purpose.  It
+#  is provided "as is" without express or implied warranty.
+#
+#  KEITH PACKARD DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
+#  INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
+#  EVENT SHALL KEITH PACKARD BE LIABLE FOR ANY SPECIAL, INDIRECT OR
+#  CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
+#  DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+#  TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+#  PERFORMANCE OF THIS SOFTWARE.
+#
 
-AC_PREREQ([2.57])
-AC_INIT(xtrans, [1.2.5], [https://bugs.freedesktop.org/enter_bug.cgi?product=xorg], xtrans)
-AM_INIT_AUTOMAKE([dist-bzip2])
+# Initialize Autoconf
+AC_PREREQ([2.60])
+AC_INIT([xtrans], [1.2.7],
+        [https://bugs.freedesktop.org/enter_bug.cgi?product=xorg], [xtrans])
+AC_CONFIG_SRCDIR([Makefile.am])
+
+# Initialize Automake
+AM_INIT_AUTOMAKE([foreign dist-bzip2])
 AM_MAINTAINER_MODE
 
-# Require xorg-macros 1.3 or later: XORG_DEFAULT_OPTIONS
+# Require xorg-macros minimum of 1.12 for DocBook external references
 m4_ifndef([XORG_MACROS_VERSION],
-	  [m4_fatal([must install xorg-macros 1.3 or later before running autoconf/autogen])])
-XORG_MACROS_VERSION(1.3)
+          [m4_fatal([must install xorg-macros 1.12 or later before running autoconf/autogen])])
+XORG_MACROS_VERSION(1.12)
 XORG_DEFAULT_OPTIONS
+XORG_ENABLE_DOCS
+XORG_WITH_XMLTO(0.0.22)
+XORG_WITH_FOP
+XORG_WITH_XSLTPROC
+XORG_CHECK_SGML_DOCTOOLS(1.8)
 
 # Because xtrans is included into other modules rather than being linked
 # with, these defines have to be added to the cflags line
@@ -41,29 +50,15 @@ AC_CHECK_FUNC(fchown, [fchown_define="-DHAS_FCHOWN"], [fchown_define=""])
 AC_SUBST(fchown_define)
 
 # sticky bit
-# 
-# if any system exists without sticky dir bits this 
+#
+# if any system exists without sticky dir bits this
 # needs to be redone with a real autoconf test
 
 sticky_bit_define="-DHAS_STICKY_DIR_BIT"
 
 AC_SUBST(sticky_bit_define)
 
-# Documentation is currently provided in troff format, built on request
-AC_PATH_PROGS([GROFF], [groff], [none], [$PATH:/usr/gnu/bin])
-AC_PATH_PROGS([PS2PDF], [ps2pdf], [none], [$PATH:/usr/gnu/bin])
-
-AC_MSG_CHECKING([whether to build documentation])
-AC_ARG_ENABLE(docs, AC_HELP_STRING([--enable-docs],
-                                   [Enable building of documentation]),
-              [build_docs="${enableval}"], [build_docs="no"])
-AC_MSG_RESULT([${build_docs}])
-if test "x${build_docs}" = xyes && test "x${GROFF}" = xnone ; then
-    AC_MSG_ERROR([can't build documentation without groff])
-fi
-
-AM_CONDITIONAL(BUILD_DOCS, [test x$build_docs = xyes])
-AM_CONDITIONAL(HAVE_PS2PDF, [test x$PS2PDF != xnone])
-
-AC_OUTPUT([Makefile
-           xtrans.pc])
+AC_CONFIG_FILES([Makefile
+		doc/Makefile
+		xtrans.pc])
+AC_OUTPUT

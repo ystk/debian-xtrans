@@ -1,3 +1,44 @@
+xtrans (1.2.7-1) unstable; urgency=low
+
+  * New upstream release.
+  * Drop dh_testroot from debian/rules clean.
+  * Bump xutils-dev, xmlto and xorg-sgml-doctools build-deps.
+
+ -- Julien Cristau <jcristau@debian.org>  Sat, 05 May 2012 17:27:47 +0200
+
+xtrans (1.2.6-2) unstable; urgency=low
+
+  [ Julien Cristau ]
+  * Remove David and Brice from Uploaders.
+  * Drop obsolete Pre-Depends on x11-common.
+
+  [ Steve Langasek ]
+  * Mark xtrans-dev Multi-Arch: foreign
+
+ -- Steve Langasek <vorlon@debian.org>  Fri, 17 Jun 2011 10:03:47 -0700
+
+xtrans (1.2.6-1) unstable; urgency=low
+
+  [ Julien Cristau ]
+  * Rename the build directory to not include DEB_BUILD_GNU_TYPE for no
+    good reason.  Thanks, Colin Watson!
+  * Remove myself from Uploaders
+
+  [ Cyril Brulebois ]
+  * New upstream release.
+  * Update debian/copyright from upstream COPYING.
+  * Bump xutils-dev build-dep for new macros.
+  * Add pkg-config build-dep.
+  * Add xmlto, xorg-sgml-doctools, and w3m build-dep for the doc.
+  * Pass --with-xmlto and --without-fop (we want html and txt only).
+  * Pass --docdir=/usr/share/doc/xtrans-dev and add this directory to
+    xtrans-dev.install file.
+  * Switch from --list-missing to --fail-missing for additional safety.
+  * No longer pass --disable-shared, this option is gone.
+  * Add myself to Uploaders.
+
+ -- Cyril Brulebois <kibi@debian.org>  Sat, 20 Nov 2010 23:20:03 +0100
+
 xtrans (1.2.5-1) unstable; urgency=low
 
   * New upstream release.

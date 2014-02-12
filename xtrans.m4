@@ -1,29 +1,25 @@
-dnl $XdotOrg: lib/xtrans/xtrans.m4,v 1.6 2005/07/26 18:59:11 alanc Exp $
 dnl
-dnl Copyright 2005 Sun Microsystems, Inc.  All rights reserved.
-dnl 
-dnl Permission to use, copy, modify, distribute, and sell this software and its
-dnl documentation for any purpose is hereby granted without fee, provided that
-dnl the above copyright notice appear in all copies and that both that
-dnl copyright notice and this permission notice appear in supporting
-dnl documentation.
-dnl 
-dnl The above copyright notice and this permission notice shall be included
-dnl in all copies or substantial portions of the Software.
-dnl 
-dnl THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-dnl OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-dnl MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-dnl IN NO EVENT SHALL THE OPEN GROUP BE LIABLE FOR ANY CLAIM, DAMAGES OR
-dnl OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-dnl ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-dnl OTHER DEALINGS IN THE SOFTWARE.
-dnl 
-dnl Except as contained in this notice, the name of the copyright holders shall
-dnl not be used in advertising or otherwise to promote the sale, use or
-dnl other dealings in this Software without prior written authorization
-dnl from the copyright holders.
-dnl 
+dnl Copyright (c) 2005, Oracle and/or its affiliates. All rights reserved.
+dnl
+dnl Permission is hereby granted, free of charge, to any person obtaining a
+dnl copy of this software and associated documentation files (the "Software"),
+dnl to deal in the Software without restriction, including without limitation
+dnl the rights to use, copy, modify, merge, publish, distribute, sublicense,
+dnl and/or sell copies of the Software, and to permit persons to whom the
+dnl Software is furnished to do so, subject to the following conditions:
+dnl
+dnl The above copyright notice and this permission notice (including the next
+dnl paragraph) shall be included in all copies or substantial portions of the
+dnl Software.
+dnl
+dnl THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+dnl IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+dnl FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+dnl THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+dnl LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+dnl FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+dnl DEALINGS IN THE SOFTWARE.
+dnl
 
 # XTRANS_TCP_FLAGS()
 # ------------------
@@ -37,9 +33,9 @@ AC_DEFUN([XTRANS_TCP_FLAGS],[
  fi
 
  # Needs to come after above checks for libsocket & libnsl for SVR4 systems
- AC_ARG_ENABLE(ipv6, 
+ AC_ARG_ENABLE(ipv6,
 	AC_HELP_STRING([--enable-ipv6],[Enable IPv6 support]),
-	[IPV6CONN=$enableval], 
+	[IPV6CONN=$enableval],
 	[AC_CHECK_FUNC(getaddrinfo,[IPV6CONN=yes],[IPV6CONN=no])])
  AC_MSG_CHECKING([if IPv6 support should be built])
  if test "$IPV6CONN" = "yes"; then
@@ -48,7 +44,7 @@ AC_DEFUN([XTRANS_TCP_FLAGS],[
  AC_MSG_RESULT($IPV6CONN)
 
  # 4.3BSD-Reno added a new member to struct sockaddr_in
- AC_CHECK_MEMBER([struct sockaddr_in.sin_len], 
+ AC_CHECK_MEMBER([struct sockaddr_in.sin_len],
 	AC_DEFINE([BSD44SOCKETS],1,
  	    [Define to 1 if `struct sockaddr_in' has a `sin_len' member]), [], [
 #include <sys/types.h>
@@ -60,7 +56,7 @@ AC_DEFUN([XTRANS_TCP_FLAGS],[
  AC_CHECK_TYPES([socklen_t], [], [], [
 AC_INCLUDES_DEFAULT
 #include <sys/socket.h>])
- 
+
 ]) # XTRANS_TCP_FLAGS
 
 # XTRANS_CONNECTION_FLAGS()
@@ -82,7 +78,7 @@ AC_DEFUN([XTRANS_CONNECTION_FLAGS],[
 	AC_DEFINE(UNIXCONN,1,[Support UNIX socket connections])
  fi
  AC_MSG_RESULT($UNIXCONN)
- AC_ARG_ENABLE(tcp-transport, 
+ AC_ARG_ENABLE(tcp-transport,
 	AC_HELP_STRING([--enable-tcp-transport],[Enable TCP socket transport]),
 	[TCPCONN=$enableval], [TCPCONN=yes])
  AC_MSG_CHECKING([if Xtrans should support TCP socket connections])
@@ -103,7 +99,7 @@ AC_DEFUN([XTRANS_CONNECTION_FLAGS],[
  if test "$LOCALCONN" = "yes"; then
 	AC_DEFINE(LOCALCONN,1,[Support os-specific local connections])
  fi
- 
+
 ]) # XTRANS_CONNECTION_FLAGS
 
 
@@ -113,7 +109,7 @@ AC_DEFUN([XTRANS_CONNECTION_FLAGS],[
 # so that any necessary networking libraries are already found
 AC_DEFUN([XTRANS_SECURE_RPC_FLAGS],
 [AC_REQUIRE([XTRANS_TCP_FLAGS])
- AC_ARG_ENABLE(secure-rpc, 
+ AC_ARG_ENABLE(secure-rpc,
 	AC_HELP_STRING([--enable-secure-rpc],[Enable Secure RPC]),
         [SECURE_RPC=$enableval], [SECURE_RPC="try"])
 
@@ -124,7 +120,7 @@ AC_DEFUN([XTRANS_SECURE_RPC_FLAGS],
 	if test "x$FOUND_SECURE_RPC" = "xno" ; then
 		if test "x$SECURE_RPC" = "xyes" ; then
 	AC_MSG_ERROR([Secure RPC requested, but required functions not found])
-		fi	
+		fi
 		SECURE_RPC="no"
 	else
 		dnl FreeBSD keeps getsecretkey in librpcsvc
